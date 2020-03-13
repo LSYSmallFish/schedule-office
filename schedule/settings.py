@@ -118,11 +118,22 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
-#静态文件存放
+# 静态文件存放
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static')
 ]
-#app
+# app
 sys.path.insert(0, os.path.join(BASE_DIR, 'apps'))
+# 指定系统的用户认证
 AUTH_USER_MODEL = 'system.UserProfile'
+# 指定系统的用户认证后端
+AUTHENTICATION_BACKENDS = (
+    'system.views_user.UserBackend',
+)
+# 媒体文件地址
+MEDIA_URL = '/media/'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+# login_required的默认登录url
+LOGIN_URL = '/login/'
