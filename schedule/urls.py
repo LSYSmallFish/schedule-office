@@ -20,11 +20,13 @@ from django.conf import settings
 from django.conf.urls import url
 from django.views.static import serve
 from system.views_user import IndexView, LoginView, LogoutView
+from dailyreport.views import myReportView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', IndexView.as_view(), name='index'),
     path('login/', LoginView.as_view(), name='login'),
     path('logout/', LogoutView.as_view(), name='logout'),
+    path('myreport/', myReportView.as_view(), name='myreport'),
     url(r'^media/(?P<path>.*)$', serve, {"document_root": settings.MEDIA_ROOT}),
 ]
