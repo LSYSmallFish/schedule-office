@@ -59,6 +59,7 @@ class reportCreateView(LoginRequiredMixin, View):
             res['result'] = True
         return HttpResponse(json.dumps(res), content_type='application/json')
 
+
 @method_decorator(xframe_options_exempt, name='dispatch')
 class reportDetailView(LoginRequiredMixin, View):
     """
@@ -75,6 +76,7 @@ class reportDetailView(LoginRequiredMixin, View):
             ret['user_all'] = user_all
             ret['report'] = report
         return render(request, 'dailyreport/report_detail.html', ret)
+
     def post(self, request):
         res = dict(result=False)
         if 'id' in request.POST and request.POST['id']:
