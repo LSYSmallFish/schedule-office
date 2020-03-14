@@ -12,6 +12,7 @@ from django.views.decorators.clickjacking import xframe_options_exempt
 import re
 from datetime import datetime, timedelta
 from django.utils.decorators import method_decorator
+from django.shortcuts import get_object_or_404
 
 User = get_user_model()
 
@@ -58,13 +59,28 @@ class reportCreateView(LoginRequiredMixin, View):
             res['result'] = True
         return HttpResponse(json.dumps(res), content_type='application/json')
 
-
+@method_decorator(xframe_options_exempt, name='dispatch')
 class reportDetailView(LoginRequiredMixin, View):
     """
     日报详情模型类
     """
-    def get(self,request):
-        ret=dict()
+
+    def get(self, request):
+        ret = dict()
         if 'id' in request.GET and request.GET['id']:
             category_all = [{'key': i[0], 'value': i[1]} for i in DailyReport.cat_choices]
-
+            report = get_object_or_404(DailyReport, pk=int(request.GET['id']))
+            user_all = User.objects.exclude(id=report.id)
+            ret['category_all'] = category_all
+            ret['user_all'] = user_all
+            ret['report'] = report
+        return render(request, 'dailyreport/report_detail.html', ret)
+    def post(self, request):
+        res = dict(result=False)
+        if 'id' in request.POST and request.POST['id']:
+            daily_report = get_object_or_404(DailyReport, pk=int(request.POST['id']))
+            daily_report_form = dailyReportForm(request.POST, instance=daily_report)
+            if daily_report_form.is_valid():
+                daily_report_form.save()
+                res['result'] = True
+        return HttpResponse(json.dumps(res), content_type='application/json')
