@@ -22,12 +22,13 @@ class UserBackend(ModelBackend):
             return None
 
 
-class IndexView(LoginRequiredMixin,View):
+class IndexView(LoginRequiredMixin, View):
     def get(self, request):
         return render(request, 'index.html')
 
+
 class LoginView(View):
-    print(123)
+
     def get(self, request):
         if not request.user.is_authenticated:
             return render(request, 'system/users/login.html')

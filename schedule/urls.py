@@ -15,12 +15,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from runtest import views
 from django.conf import settings
 from django.conf.urls import url
 from django.views.static import serve
 from system.views_user import IndexView, LoginView, LogoutView
-from dailyreport.views import myReportView
+from dailyreport.views import myReportView, reportCreateView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -28,5 +27,6 @@ urlpatterns = [
     path('login/', LoginView.as_view(), name='login'),
     path('logout/', LogoutView.as_view(), name='logout'),
     path('myreport/', myReportView.as_view(), name='myreport'),
+    path('myreport/create/', reportCreateView.as_view(), name='myreport-create'),
     url(r'^media/(?P<path>.*)$', serve, {"document_root": settings.MEDIA_ROOT}),
 ]
